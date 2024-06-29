@@ -1,0 +1,114 @@
+import random
+import time
+import tkinter as tk
+
+# Define the responses, symptoms, conditions, and medications
+responses = {
+    "hi": ["Hello! How can I assist you today?", "Hi there! How can I help you?"],
+    "how are you": ["I'm doing well, thank you! How can I help you?", "I'm fine, thanks! What can I do for you?"],
+    "what is your name": ["My name is HealthBot. I'm here to answer your healthcare questions.", "I'm HealthBot, a healthcare assistant."],
+    "thank you": ["You're welcome! If you have any more questions, feel free to ask.", "You're welcome! Let me know if there's anything else I can help with."],
+    "bye": ["Goodbye! Take care of yourself.", "Bye! Stay healthy!"]
+}
+
+# Define a dictionary to store symptoms, associated conditions, and medications
+symptoms = {
+    "headache": {
+        "conditions": ["migraine", "tension headache", "sinusitis"],
+        "medications": ["acetaminophen", "ibuprofen"]
+    },
+    "cough": {
+        "conditions": ["common cold", "flu", "pneumonia"],
+        "medications": ["cough syrup", "guaifenesin"]
+    },
+    "fever": {
+        "conditions": ["influenza", "COVID-19", "urinary tract infection"],
+        "medications": ["acetaminophen", "ibuprofen"]
+    },
+    "abdominal pain": {
+        "conditions": ["appendicitis", "gastritis", "kidney stones"],
+        "medications": ["antacids", "pain relievers"]
+    },
+    "rash": {
+        "conditions": ["allergic reaction", "eczema", "psoriasis"],
+        "medications": ["antihistamines", "steroid creams"]
+    },
+    "cancer": {
+        "conditions": ["breast cancer", "lung cancer", "colon cancer"],
+        "medications": ["chemotherapy", "radiation therapy", "surgery"]
+    },
+    "skin infection": {
+        "conditions": ["cellulitis", "impetigo", "fungal infection"],
+        "medications": ["antibiotics", "antifungal creams"]
+    },
+    "cataract": {
+        "conditions": ["age-related cataract", "traumatic cataract", "congenital cataract"],
+        "medications": ["surgery (cataract removal)"]
+    },
+    "tumors": {
+        "conditions": ["benign tumor", "malignant tumor", "brain tumor"],
+        "medications": ["surgery", "radiation therapy", "chemotherapy"]
+    },
+    "lymph node issues": {
+        "conditions": ["lymphadenitis", "lymphoma", "metastatic cancer"],
+        "medications": ["antibiotics", "chemotherapy"]
+    }
+}
+
+# ... (Code for responses, symptoms, conditions, and medications)
+
+# Function to process user input and generate a response
+
+
+def greeting():
+    return "Hey! This is an AI chatbot made for medical purpose. Type Hi to start and define your symptoms" 
+def get_response(user_input):
+    user_input = user_input.lower()
+
+    # Check if the user input matches any predefined patterns and return a random corresponding response
+    for pattern, response_list in responses.items():
+        if pattern in user_input:
+            return random.choice(response_list)
+
+    # Check if the user input matches any predefined symptoms and return associated conditions and medications
+    if user_input in symptoms:
+        conditions = symptoms[user_input]["conditions"]
+        medications = symptoms[user_input]["medications"]
+        
+        condition_text = "\n".join(conditions)
+        medication_text = "\n".join(medications)
+
+        return f"The symptom '{user_input}' may be related to the following conditions:\n{condition_text}\n\nFor the symptom '{user_input}', you can consider taking the following medications:\n{medication_text}"
+
+    # If no predefined pattern or symptom is found, generate a generic response
+    return "I'm sorry, but I don't have the information you're looking for. Can you please ask another question?"
+
+# Function to handle the user's button click event
+def handle_click():
+    # text.insert("Hey! This is a AI generated tool made for medical purpose. Type Hello to start ")
+    user_input = entry.get()
+    response = get_response(user_input)
+    text.insert(tk.END, "User: " + user_input + "\n")
+    text.insert(tk.END, "HealthBot: " + response + "\n\n")
+    entry.delete(0, tk.END)
+
+# Create the main application window
+window = tk.Tk()
+window.title("Healthcare Chatbot => Stress To Smile ;)")
+
+# Create the text widget to display the conversation
+text = tk.Text(window, width=50, height=20)
+text.pack()
+
+# Create the input entry widget
+entry = tk.Entry(window, width=40)
+entry.pack()
+
+# Create the send button
+text.insert(tk.END, "HealthBot: " + greeting() + "\n")
+button = tk.Button(window, text="Send", command=handle_click)
+button.pack()
+
+
+# Start the Tkinter event loop
+window.mainloop()
